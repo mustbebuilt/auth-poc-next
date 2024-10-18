@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 const secretKey = "secret";
 const key = new TextEncoder().encode(secretKey);
 
-export async function encrypt(payload: any) {
+export async function encrypt(payload) {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
@@ -13,17 +13,17 @@ export async function encrypt(payload: any) {
     .sign(key);
 }
 
-export async function decrypt(input: string): Promise<any> {
+export async function decrypt(input) {
   const { payload } = await jwtVerify(input, key, {
     algorithms: ["HS256"],
   });
   return payload;
 }
 
-export async function login(formData: FormData) {
+export async function login(formData) {
   // Verify credentials && get the user
 
-  const user = { email: formData.get("email"), name: "John" };
+  const user = { email: formData.get("email"), name: "Martin" };
 
   // Create the session
   const expires = new Date(Date.now() + 10 * 1000);
@@ -44,7 +44,7 @@ export async function getSession() {
   return await decrypt(session);
 }
 
-export async function updateSession(request: NextRequest) {
+export async function updateSession(request) {
   const session = request.cookies.get("session")?.value;
   if (!session) return;
 
